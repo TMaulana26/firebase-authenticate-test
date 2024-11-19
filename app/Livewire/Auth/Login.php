@@ -44,7 +44,7 @@ class Login extends Component
                 // Use the instance of $this->auth to call verifyIdToken
                 $verifiedIdToken = $this->auth->verifyIdToken($idTokenString, true, 60);
             } catch (FailedToVerifyToken $e) {
-                dd('The token is invalid: ' . $e->getMessage());
+                $this->addError('email', 'The token is invalid: ' . $e->getMessage());
                 return; // Exit early if the token is invalid
             }
 

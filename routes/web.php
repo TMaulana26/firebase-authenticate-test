@@ -29,17 +29,14 @@ Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)
         ->name('login');
 
-    Route::get('redirect', [GoogleAuthController::class, 'redirect'])
+    Route::get('google/redirect', [GoogleAuthController::class, 'redirect'])
         ->name('redirect');
 
     Route::get('register', Register::class)
         ->name('register');
 
-    Route::get('callback', [GoogleAuthController::class, 'callback'])
+    Route::get('google/callback', [GoogleAuthController::class, 'callback'])
         ->name('callback');
-
-    Route::get('add-password', AddPassword::class)
-        ->name('add-password');
 });
 
 Route::get('password/reset', Email::class)
