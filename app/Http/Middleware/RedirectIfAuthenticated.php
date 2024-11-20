@@ -21,7 +21,10 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(route('home'));
+                if (!$request = session()->has('return_to')) {
+                    return redirect(route('sso.redirect'));
+                }
+                return redirect(route('dashboard'));
             }
         }
 

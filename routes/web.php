@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\SSOController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Verify;
 use App\Livewire\Auth\Register;
-use App\Livewire\Auth\AddPassword;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Auth\Passwords\Email;
 use App\Livewire\Auth\Passwords\Reset;
+use App\Http\Controllers\SSOController;
 use App\Livewire\Auth\Passwords\Confirm;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -23,10 +23,9 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::view('/', 'welcome')->name('home');
-
 Route::middleware('guest')->group(function () {
+    Route::view('/', 'welcome')->name('home');
+
     Route::get('login', Login::class)
         ->name('login');
 
@@ -39,10 +38,10 @@ Route::middleware('guest')->group(function () {
     Route::get('google/callback', [GoogleAuthController::class, 'callback'])
         ->name('callback');
 
-    Route::get('sso/redirect', [SSOController::class, 'redirect'])->name('sso.redirect');
 
 
 });
+Route::get('sso/redirect', [SSOController::class, 'redirect'])->name('sso.redirect');
 
 Route::get('password/reset', Email::class)
     ->name('password.request');
@@ -64,8 +63,9 @@ Route::middleware('auth')->group(function () {
         ->middleware('signed')
         ->name('verification.verify');
 
-    Route::get('sso/callback', [SSOController::class, 'redirectToClient'])->name('sso.callback.client');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('sso/callback', [SSOController::class, 'redirectToClient'])->name('sso.callback.client');
 
     Route::post('logout', LogoutController::class)
         ->name('logout');

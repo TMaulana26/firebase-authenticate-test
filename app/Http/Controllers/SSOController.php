@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Firebase\JWT\JWT;
 use App\Models\Client;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\Request;
@@ -22,9 +21,8 @@ class SSOController extends Controller
         if (!$client) {
             return response()->json(['error' => 'Invalid client credentials'], 401);
         }
-
         // Store the `return_to` URL and client data in the session
-        session(['return_to' => $client->redirect_uri]);
+        session()->put('return_to', $client->redirect_uri);
 
         // Redirect to the login page
         return redirect()->route('home');
@@ -33,7 +31,7 @@ class SSOController extends Controller
     public function redirectToClient()
     {
         // Get the client URI from the session
-        $clientUri = session('return_to');
+        $clientUri = session()->pull('return_to');
 
         // Check if the client URI exists
         if (!$clientUri) {
@@ -58,10 +56,11 @@ class SSOController extends Controller
         $client = Client::where('redirect_uri', $clientUri)->first()->client_id;
         $key = substr(hash('sha256', $client, true), 0, 32);
 
-        $encrypterToken = new Encrypter($key , 'AES-256-CBC');
+        $encrypterToken = new Encrypter($key, 'AES-256-CBC');
         $token = $encrypterToken->encrypt(json_encode($payload));
 
         // Redirect the user to the client with the token as a query parameter
         return redirect()->away($clientUri . '?token=' . urlencode($token));
+
     }
 }

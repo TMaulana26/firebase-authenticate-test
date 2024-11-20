@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <style>
         @media(prefers-color-scheme: dark) {
             .bg-dots {
@@ -29,23 +28,20 @@
             </div>
             <div class="mt-16 flex justify-center">
                 <div target="_blank"
-                    class="scale-100 w-[100%] flex-col p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-indigo-500">
+                    class="scale-100 w-[30%]  flex-col p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-indigo-500">
                     <div class="">
                         <h2 class="my-2 text-xl font-semibold text-gray-900 dark:text-white text-center">
                             {{ env('APP_NAME') }}</h2>
                         @if (Route::has('login'))
                             <div class="p-6">
-                                <div class="flex flex-row gap-4 justify-center">
-                                    <a href="{{ route('login') }}"
-                                        class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                        Log in
-                                    </a>
-                                    @if (Route::has('register'))
-                                        <a href="{{ route('register') }}"
-                                            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                            Register
-                                        </a>
-                                    @endif
+                                <div class="flex flex-row gap-4 items-center justify-center">
+                                    <a href="{{ route('sso.callback.client') }}"
+                                        class="font-semibold py-2 px-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-indigo-500">Return</a>
+                                    <form action="{{ route('logout') }}" method="post">
+                                        @csrf
+                                        <button type="submit"
+                                            class="font-semibold py-2 px-4 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-150 ease-in-out">Logout</button>
+                                    </form>
                                 </div>
                             </div>
                         @endif
@@ -53,6 +49,14 @@
                 </div>
             </div>
             <div class="flex flex-col justify-center px-0 mt-16 sm:items-center sm:justify-between">
+                <h3
+                    class="font-semibold text-center mt-8 py-2 px-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-indigo-500">
+                    Hello, <i>{{ Auth::user()->name }}</i></h3>
+                <div class="mx-4">
+                    <p
+                        class="mt-2 text-sm text-center text-red-600 dark:text-red-400 break-all opacity-7 mb-8 motion-safe:hover:scale-[1.01] transition-all duration-250">
+                        Token: {{ Session()->get('firebase_token') }}</p>
+                </div>
                 <div class="ml-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
                     {{ session()->get('return_to') }}
                 </div>
