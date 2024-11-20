@@ -69,7 +69,7 @@ class Login extends Component
             session(['firebase_token' => $idTokenString]);
 
             // Redirect to the intended route
-            return redirect()->intended(route('home'));
+            return redirect()->intended(route('dashboard'));
 
         } catch (UserNotFound $e) {
             $this->addError('email', 'No user found with the provided email.');
