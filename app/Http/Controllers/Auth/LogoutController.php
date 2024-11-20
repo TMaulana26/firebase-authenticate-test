@@ -22,6 +22,9 @@ class LogoutController extends Controller
     //     $this->auth->revokeRefreshTokens($uid);
         Auth::logout();
 
+        session()->flush();
+        session()->regenerate();
+
         return redirect(route('home'));
     }
 }

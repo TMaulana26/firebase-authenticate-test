@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SSOController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Verify;
 use App\Livewire\Auth\Register;
@@ -37,6 +38,10 @@ Route::middleware('guest')->group(function () {
 
     Route::get('google/callback', [GoogleAuthController::class, 'callback'])
         ->name('callback');
+
+    Route::get('sso/redirect', [SSOController::class, 'redirect'])->name('sso.redirect');
+
+
 });
 
 Route::get('password/reset', Email::class)
@@ -58,6 +63,9 @@ Route::middleware('auth')->group(function () {
     Route::get('email/verify/{id}/{hash}', EmailVerificationController::class)
         ->middleware('signed')
         ->name('verification.verify');
+
+    Route::get('sso/callback', [SSOController::class, 'redirectToClient'])->name('sso.callback.client');
+
 
     Route::post('logout', LogoutController::class)
         ->name('logout');

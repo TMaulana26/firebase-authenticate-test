@@ -41,8 +41,8 @@
                             <div class="p-6">
                                 @auth
                                     <div class="flex flex-row gap-4 items-center justify-center">
-                                        <a href="{{ route('home') }}"
-                                            class="font-semibold py-2 px-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-indigo-500">Home</a>
+                                        <a href="{{ route('sso.callback.client') }}"
+                                            class="font-semibold py-2 px-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-indigo-500">Return</a>
                                         <form action="{{ route('logout') }}" method="post">
                                             @csrf
                                             <button type="submit"
@@ -83,6 +83,9 @@
                         <p class="mt-2 text-sm text-center text-red-600 dark:text-red-400 break-all opacity-7 mb-8 motion-safe:hover:scale-[1.01] transition-all duration-250">Token: {{ Session()->get('firebase_token') }}</p>
                     </div>
                 @endauth
+                <div class="ml-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
+                    {{session('return_to')}}
+                </div>
                 <div class="ml-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
                     Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }}) & Livewire
                     {{ \Composer\InstalledVersions::getPrettyVersion('livewire/livewire') }}
