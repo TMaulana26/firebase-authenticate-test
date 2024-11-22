@@ -11,7 +11,13 @@ class SSOController extends Controller
     public function redirect(Request $request)
     {
         $clientId = $request->query('client_id');
-        $clientSecret = $request->query('client_secret');
+
+        $key = substr(hash('sha256', $clientId, true), 0, 32);
+        $encrypter = new Encrypter($key, 'AES-256-CBC');
+        $decrypted = $encrypter->decrypt($request->query('token'));
+
+        $clientData = (array) json_decode($decrypted);
+        $clientSecret = $clientData['client_secret'];
 
         // Verify client credentials
         $client = Client::where('client_id', $clientId)
